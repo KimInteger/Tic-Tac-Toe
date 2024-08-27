@@ -1,9 +1,27 @@
 import React from "react";
 
-const App = () => {
+const App : React.FC = () => {
   return (
     <>
-      <h1>Tic Tac Toe!</h1>
+      <div>
+        <h1>A</h1>
+        <h2>Score : <span></span> </h2>
+      </div>
+      <div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div>
+        <h1>B</h1>
+        <h2>Score : <span></span> </h2>
+      </div>
     </>
   )
 }
