@@ -1,4 +1,5 @@
 import React from "react";
+import TicTacToeField from "./app/gameBoard/playField";
 
 const App : React.FC = () => {
   return (
@@ -7,17 +8,7 @@ const App : React.FC = () => {
         <h1>A</h1>
         <h2>Score : <span></span> </h2>
       </div>
-      <div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
+      <TicTacToeField />
       <div>
         <h1>B</h1>
         <h2>Score : <span></span> </h2>
