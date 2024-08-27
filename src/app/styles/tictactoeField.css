@@ -1,0 +1,19 @@
+/* tictactoeField.css */
+.tictactoeField {
+  display: grid;
+  grid-template-columns: repeat(3, 100px); /* 3개의 열 */
+  grid-template-rows: repeat(3, 100px);    /* 3개의 행 */
+}
+
+.block {
+  width: 100px;
+  height: 100px;
+  background-color: lightgray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  box-sizing: border-box;
+  border: 1px solid black;
+}
