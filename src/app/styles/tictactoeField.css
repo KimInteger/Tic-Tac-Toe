@@ -2,13 +2,14 @@
 .tictactoeField {
   display: grid;
   grid-template-columns: repeat(3, 100px); /* 3개의 열 */
-  grid-template-rows: repeat(3, 100px);    /* 3개의 행 */
+  grid-template-rows: repeat(3, 100px); /* 3개의 행 */
+  gap: 1px;
 }
 
 .block {
   width: 100px;
   height: 100px;
-  background-color: lightgray;
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
