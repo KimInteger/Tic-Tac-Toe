@@ -5,6 +5,17 @@ const TicTacToeField: React.FC = () => {
   const [clickCount, setClickCount] = useState<number>(0);
   const [clickOrder, setClickOrder] = useState<{ [key: number]: number }>({});
 
+  const winConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
   /**
    * @brief 전역 count가 짝수면 O, 홀수면 X를 textContent에 입력
    * @details 타일의 index : count를 clickOrder에 저장하여, 몇번 째 클릭인지 기록한다.
