@@ -32,7 +32,6 @@ const TicTacToeField: React.FC = () => {
     } else {
       target.textContent = 'X';
     }
-    console.log(clickOrder);
 
     // 클릭 수 업데이트
     setClickCount(clickCount + 1);
