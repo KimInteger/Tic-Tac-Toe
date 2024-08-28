@@ -32,13 +32,15 @@ const TicTacToeField: React.FC = () => {
     } else {
       target.textContent = 'X';
     }
+    console.log(clickOrder);
 
     // 클릭 수 업데이트
     setClickCount(clickCount + 1);
   }
 
   /**
-   * @brief 이벤트 발생 타일의 textContent를 7번째 이벤트에 공란으로 만드는 함수
+   * @brief 7번째 이후에 클릭된 타일의 textContent를 공란으로 만드는 함수
+   * @details clickOrder 객체를 순회하여, 각 타일의 클릭 시점을 기록한 값과 현재 클릭 수를 비교합니다.
    */
   function checkAndClearTiles(): void {
     // 각 타일의 클릭 순서와 현재 클릭 카운트를 비교해 7번 뒤의 타일을 초기화
