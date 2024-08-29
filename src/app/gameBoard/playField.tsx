@@ -60,17 +60,18 @@ const TicTacToeField: React.FC = () => {
     });
   }
 
-  // 클릭이 발생할 때마다 타일을 초기화할지 체크
+  // gameState가 변경된 후 승리 조건 체크
   useEffect(() => {
+    // 타일 초기화 수행
+    checkAndClearTiles();
     console.log(gameState);
-    checkAndClearTiles(); // 타일 초기화 먼저 수행
-    setTimeout(() => {
-      console.log(gameState);
-
-      checkWinner(gameState); // 타일이 초기화된 후 승리 조건 체크
-    }, 0);
   }, [clickCount]);
 
+  useEffect(() => {
+    // gameState 변경 후 승리 조건 체크
+    console.log(gameState);
+    checkWinner(gameState);
+  }, [gameState]);
   // 게임 리셋 함수
   function resetGame(): void {
     setGameState(Array(9).fill(''));
