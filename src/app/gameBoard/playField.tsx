@@ -1,87 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/tictactoeField.css';
+import { winConditions } from './lib/winConditions';
 
 const TicTacToeField: React.FC = () => {
+  const [gameState, setGameState] = useState<string[]>(Array(9).fill(''));
+  const [currentPlayer, setCurrentPlayer] = useState<'X' | 'O'>('O');
   const [clickCount, setClickCount] = useState<number>(0);
   const [clickOrder, setClickOrder] = useState<{ [key: number]: number }>({});
+  const [winner, setWinner] = useState<string | null>(null);
 
-  const winConditions = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
+  // 타일 클릭 핸들러
+  function handleClick(index: number): void {
+    if (gameState[index] || winner) return; // 이미 클릭된 타일이거나 승자가 있으면 무시
 
-  /**
-   * @brief 전역 count가 짝수면 O, 홀수면 X를 textContent에 입력
-   * @details 타일의 index : count를 clickOrder에 저장하여, 몇번 째 클릭인지 기록한다.
-   * @param index 타일의 index
-   * @param e 이벤트 할당 요소 지정
-   * @returns count + 1
-   */
-  function clickTile(index: number, e: React.MouseEvent<HTMLDivElement>): void {
-    const target = e.currentTarget;
-
-    // 이미 클릭된 타일은 무시한다.
-    if (target.textContent === 'X' || target.textContent === 'O') {
-      return;
-    }
+    const newGameState = [...gameState];
+    newGameState[index] = currentPlayer;
+    setGameState(newGameState);
 
     // 현재 타일이 몇 번째로 클릭되었는지 기록
     setClickOrder((prev) => ({
       ...prev,
-      [index]: clickCount, // 클릭 당시의 카운트를 저장
+      [index]: clickCount,
     }));
 
-    // 클릭 수에 따라 'O' 또는 'X' 배치
-    if (clickCount % 2 === 0) {
-      target.textContent = 'O';
-    } else {
-      target.textContent = 'X';
-    }
-
-    // 클릭 수 업데이트
-    setClickCount(clickCount + 1);
+    // 클릭 수 업데이트 및 플레이어 전환
+    setClickCount((prevCount) => prevCount + 1);
+    setCurrentPlayer(currentPlayer === 'O' ? 'X' : 'O');
   }
 
-  /**
-   * @brief 7번째 이후에 클릭된 타일의 textContent를 공란으로 만드는 함수
-   * @details clickOrder 객체를 순회하여, 각 타일의 클릭 시점을 기록한 값과 현재 클릭 수를 비교합니다.
-   */
-  function checkAndClearTiles(): void {
-    // 각 타일의 클릭 순서와 현재 클릭 카운트를 비교해 7번 뒤의 타일을 초기화
-    for (let index in clickOrder) {
-      const tileClickCount = clickOrder[+index];
-      const tileElement = document.querySelectorAll('.block')[+index];
-
-      if (clickCount - tileClickCount >= 7) {
-        // 7번째 후의 클릭이 이루어진 타일의 내용 제거
-        if (tileElement) {
-          tileElement.textContent = '';
-        }
+  // 승리 조건을 체크하는 함수
+  function checkWinner(gameState: string[]): void {
+    for (let i = 0; i < winConditions.length; i++) {
+      const [a, b, c] = winConditions[i];
+      if (
+        gameState[a] &&
+        gameState[a] === gameState[b] &&
+        gameState[a] === gameState[c]
+      ) {
+        setWinner(gameState[a]);
+        return;
       }
     }
   }
 
-  // 클릭이 발생할 때마다 clcikOrder을 확인하여 clickCount + 6인 타일 초기화
-  React.useEffect(() => {
+  // 7번째 이후 클릭된 타일을 초기화하는 함수
+  function checkAndClearTiles(): void {
+    setGameState((prevGameState) => {
+      const newGameState = [...prevGameState];
+
+      // 각 타일의 클릭 순서와 현재 클릭 카운트를 비교해 7번 이후의 타일 초기화
+      for (let index in clickOrder) {
+        const tileClickCount = clickOrder[+index];
+        if (clickCount - tileClickCount >= 7) {
+          newGameState[+index] = ''; // 7번째 이후의 클릭된 타일 초기화
+        }
+      }
+
+      return newGameState;
+    });
+  }
+
+  // 클릭이 발생할 때마다 타일을 초기화할지 체크
+  useEffect(() => {
     checkAndClearTiles();
+    checkWinner(gameState); // 승리 체크
   }, [clickCount]);
+
+  // 게임 리셋 함수
+  function resetGame(): void {
+    setGameState(Array(9).fill(''));
+    setClickOrder({});
+    setClickCount(0);
+    setWinner(null);
+    setCurrentPlayer('O');
+  }
 
   return (
     <div className="tictactoeField">
-      {/* 첫번째 인수는 사용하지 아니함. */}
-      {[...Array(9)].map((_, index) => (
-        <div
-          key={index}
-          className="block"
-          onClick={(e) => clickTile(index, e)}
-        ></div>
-      ))}
+      <h2>{winner ? `${winner}의 승리입니다!` : `${currentPlayer}의 차례`}</h2>
+      <div className="board">
+        {gameState.map((value, index) => (
+          <div key={index} className="block" onClick={() => handleClick(index)}>
+            {value}
+          </div>
+        ))}
+      </div>
+      {winner && (
+        <div className="modal">
+          <h2>{`${winner}의 승리입니다!`}</h2>
+          <button onClick={resetGame}>다시하기</button>
+        </div>
+      )}
     </div>
   );
 };
