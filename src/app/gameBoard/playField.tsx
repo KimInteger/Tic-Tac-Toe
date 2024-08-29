@@ -60,18 +60,20 @@ const TicTacToeField: React.FC = () => {
     });
   }
 
-  // gameState가 변경된 후 승리 조건 체크
+  // 클릭 수에 따라 타일 초기화
   useEffect(() => {
-    // 타일 초기화 수행
     checkAndClearTiles();
-    console.log(gameState);
   }, [clickCount]);
 
+  // 게임 상태 변경 후 승리 조건 체크
   useEffect(() => {
-    // gameState 변경 후 승리 조건 체크
-    console.log(gameState);
-    checkWinner(gameState);
+    // 빈 타일이 3개 이상일 때만 승리 조건 체크
+    const emptyTiles = gameState.filter((tile) => tile === '').length;
+    if (emptyTiles >= 3) {
+      checkWinner(gameState);
+    }
   }, [gameState]);
+
   // 게임 리셋 함수
   function resetGame(): void {
     setGameState(Array(9).fill(''));
