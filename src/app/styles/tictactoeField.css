@@ -1,9 +1,19 @@
 /* tictactoeField.css */
 .tictactoeField {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.board {
   display: grid;
   grid-template-columns: repeat(3, 100px); /* 3개의 열 */
   grid-template-rows: repeat(3, 100px); /* 3개의 행 */
   gap: 1px;
+  margin-top: 20px;
+  background-color: #333; /* 보드 배경 색상 */
+  padding: 5px;
+  border-radius: 10px; /* 보드의 둥근 모서리 */
 }
 
 .block {
@@ -17,4 +27,28 @@
   font-weight: bold;
   box-sizing: border-box;
   border: 1px solid black;
+  cursor: pointer;
+}
+
+.block:hover {
+  background-color: #f0f0f0; /* 타일에 마우스를 올렸을 때의 효과 */
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border-radius: 10px;
+}
+
+.modal button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  font-size: 16px;
+  cursor: pointer;
 }
